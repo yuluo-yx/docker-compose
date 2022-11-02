@@ -1,0 +1,22 @@
+version: '3.1'
+services:
+  redis:
+    image: redis
+    container_name: redis
+    restart: always
+    volumes:
+      - ./redis.conf:/usr/local/etc/redis/redis.conf
+      - ./data:/data
+    command: redis-server /usr/local/etc/redis/redis.conf
+    expose:
+      - 6379
+    ports:
+      - 6379:6379
+
+    # 通过nginx代理的时候需要，公用nginx的网卡，不会创建新的网卡
+    networks:
+      - nginx
+
+networks:
+  nginx:
+    external: true
