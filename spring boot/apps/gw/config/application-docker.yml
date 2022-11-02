@@ -1,0 +1,45 @@
+server:
+  port: ${GW_SERVICE_PORT:9090}
+
+logging:
+  file:
+    name: /usr/app/logs/gw-service.log
+  level:
+    root: info
+  pattern:
+    dateformat: yyyy-MM-dd HH:mm:ss.SSS,GMT+8
+
+spring:
+  cloud:
+    nacos:
+      discovery:
+        server-addr: ${NACOS_ADDR:59.74.224.2:8848}
+
+  security:
+    # 权限校验开关
+    resource-role-authorization: true
+    oauth2:
+      resourceserver:
+        jwt:
+          jwk-set-uri: 'http://hqf-service-oauth2:9011/rsa/publicKey' #配置RSA的公钥访问地址
+
+  redis:
+    database: 0
+    host: 59.74.224.21
+    port: 6379
+    password: E64e}93r6R[D$w2.
+
+secure:
+  ignore:
+    #配置白名单路径
+    urls:
+      # 拉取token不认证
+      - "/actuator/**"
+      - "/auth/oauth/token"
+      # 公司名称在登录之前拉取
+      - "/system/system/name/"
+      # 拼团信息浏览
+      - "/groupWork/group/wechat/list/*"
+      # 微信支付接口回调
+      - "/wx/pay/*/notify/order"
+      - "/wx/pay/*/notify/refund"

@@ -1,0 +1,33 @@
+server:
+  port: ${WX_SERVICE_PORT:9090}
+
+logging:
+  file:
+    name: /usr/app/logs/wx-service.log
+  pattern:
+    dateformat: yyyy-MM-dd HH:mm:ss.SSS,GMT+8
+
+spring:
+  cloud:
+    nacos:
+      discovery:
+        server-addr: ${NACOS_ADDR:59.74.224.2:8848}
+
+wx:
+  miniapp:
+    configs:
+      # 汇庆方
+      - appid: wx188b5e6fe114d22e #微信小程序的appid
+        secret: ae016e90c9cf07e3b9801ea1dec89fde #微信小程序的Secret
+  pay:
+    configs:
+      - appId: wx188b5e6fe114d22e #微信公众号或者小程序等的appid
+        mchId: 1608537666 #微信支付商户号
+        mchKey: 342fe7c9f5564022092b175b08b0526f #微信支付商户密钥【内容：SecureUtil.md5(1608537666)】
+        subAppId: #服务商模式下的子商户公众账号ID
+        subMchId: #服务商模式下的子商户号
+        keyPath: classpath:apiclient_cert.p12 #p12证书的位置，可以指定绝对路径，也可以指定类路径（以classpath:开头）
+        useSandbox: false #是否使用沙箱环境
+        payNotifyUrl: https://hqfang.com.cn:444/api/wx/pay/wx188b5e6fe114d22e/notify/order #微信支付成功回调地址
+        refundNotifyUrl: https://hqfang.com.cn:444/api/wx/pay/wx188b5e6fe114d22e/notify/refund  #微信退款回调地址
+        tradeType: JSAPI #交易类型，取值：JSAPI--JSAPI支付（或小程序支付）、NATIVE--Native支付、APP--app支付，MWEB--H5支付、MICROPAY--付款码支付

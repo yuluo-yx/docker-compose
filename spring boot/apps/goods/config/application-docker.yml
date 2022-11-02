@@ -1,0 +1,29 @@
+server:
+  port: ${GOODS_SERVICE_PORT:9090}
+
+logging:
+  file:
+    name: /usr/app/logs/goods-service.log
+  pattern:
+    dateformat: yyyy-MM-dd HH:mm:ss.SSS,GMT+8
+
+spring:
+  cloud:
+    nacos:
+      discovery:
+        server-addr: ${NACOS_ADDR:59.74.224.2:8848}
+
+  redis:
+    database: 0
+    host: 59.74.224.21
+    port: 6379
+    password: E64e}93r6R[D$w2.
+
+  data:
+    mongodb:
+      uri: mongodb://hqfangDB-admin:Wp9yw8f8EKj4y9B6zZ@mongodb.hqfang.com.cn:27018,mongodb.hqfang.com.cn:27019/hqfangDB?replicaSet=rs0
+      authentication-database: hqfangDB
+      database: hqfangDB
+
+  pictureUploadPath: /data/web/static/images/
+  fileUploadPath: /data/web/static/thumbs/

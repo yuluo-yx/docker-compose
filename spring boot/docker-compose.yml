@@ -1,0 +1,321 @@
+version: '3'
+
+# 除了80端口是浏览器访问的，其他的端口都是容器所在的内部网络开放
+# 不用映射其他端口出来，如果需要外部访问数据库的话，可以把27017映射到主机的其他端口上面来
+services:
+#  captcha:
+#    image: ${DOCKER_PREFIX}-service-captcha
+#    build:
+#      dockerfile: ${DOCKERFILE}
+#      context: .
+#      args:
+#        APP_HOME: ${APP_HOME}
+#    container_name: ${DOCKER_PREFIX}-service-captcha
+#    restart: always
+#    environment:
+#      - SERVER_PORT=${CAPTCHA_SERVICE_PORT}
+#      - NACOS_ADDR=${NACOS_ADDR}
+#    volumes:
+#      - ${CAPTCHA_SERVICE}:${APP_HOME} # 将jar包映射进来
+#      - ./files:/usr/app/files         # 上传的静态文件映射到nginx下面去
+#      - ./apps/logs:/usr/app/logs       # 将springboot应用的日志映射出来
+#      - /etc/localtime:/etc/localtime
+#    expose:
+#      - ${CAPTCHA_SERVICE_PORT}
+#    # ports:
+#    #   - ${CAPTCHA_SERVICE_PORT}:${CAPTCHA_SERVICE_PORT}
+#    # depends_on:
+#      # - db
+#    networks:
+#      - hqf
+#    extra_hosts:
+#      - mongodb.hqfang.com.cn:${MONGO_DB_IP}
+  customer:
+    image: ${DOCKER_PREFIX}-service-customer
+    build:
+      dockerfile: ${DOCKERFILE}
+      context: .
+      args:
+        APP_HOME: ${APP_HOME}
+    container_name: ${DOCKER_PREFIX}-service-customer
+    restart: always
+    environment:
+      - SERVER_PORT=${CUSTOMER_SERVICE_PORT}
+      - NACOS_ADDR=${NACOS_ADDR}
+    volumes:
+      - ${CUSTOMER_SERVICE}:${APP_HOME}   # 将jar包映射进来
+      - ./files:/usr/app/files         # 上传的静态文件映射到nginx下面去
+      - ./apps/logs:/usr/app/logs       # 将springboot应用的日志映射出来
+      - /etc/localtime:/etc/localtime
+    expose:
+      - ${CUSTOMER_SERVICE_PORT}
+#    ports:
+#      - ${CUSTOMER_SERVICE_PORT}:${CUSTOMER_SERVICE_PORT}
+    # depends_on:
+      # - db
+    networks:
+      - hqf
+    extra_hosts:
+      - mongodb.hqfang.com.cn:${MONGO_DB_IP}
+  goods:
+    image: ${DOCKER_PREFIX}-service-goods
+    build:
+      dockerfile: ${DOCKERFILE}
+      context: .
+      args:
+        APP_HOME: ${APP_HOME}
+    container_name: ${DOCKER_PREFIX}-service-goods
+    restart: always
+    environment:
+      - SERVER_PORT=${GOODS_SERVICE_PORT}
+      - NACOS_ADDR=${NACOS_ADDR}
+      - STATIC_UPLOAD_PATH=${STATIC_UPLOAD_PATH}
+      - STATIC_REQUEST_URL=${STATIC_REQUEST_URL}
+    volumes:
+      - ${GOODS_SERVICE}:${APP_HOME}   # 将jar包映射进来
+      - ./files/pics/goods:${STATIC_UPLOAD_PATH}/images     # 上传的静态文件映射到nginx下面去
+      - ./files/thumbs/goods:${STATIC_UPLOAD_PATH}/thumbs   # 上传的静态文件映射到nginx下面去
+      - ./apps/logs:/usr/app/logs       # 将springboot应用的日志映射出来
+      - /etc/localtime:/etc/localtime
+    expose:
+      - ${GOODS_SERVICE_PORT}
+#    ports:
+#      - ${GOODS_SERVICE_PORT}:${GOODS_SERVICE_PORT}
+    # depends_on:
+      # - db
+    networks:
+      - hqf
+    extra_hosts:
+      - mongodb.hqfang.com.cn:${MONGO_DB_IP}
+  group:
+    image: ${DOCKER_PREFIX}-service-group
+    build:
+      dockerfile: ${DOCKERFILE}
+      context: .
+      args:
+        APP_HOME: ${APP_HOME}
+    container_name: ${DOCKER_PREFIX}-service-group
+    restart: always
+    environment:
+      - SERVER_PORT=${GROUP_SERVICE_PORT}
+      - NACOS_ADDR=${NACOS_ADDR}
+    volumes:
+      - ${GROUP_SERVICE}:${APP_HOME}   # 将jar包映射进来
+      - ./files:/usr/app/files         # 上传的静态文件映射到nginx下面去
+      - ./apps/logs:/usr/app/logs       # 将springboot应用的日志映射出来
+      - /etc/localtime:/etc/localtime
+    expose:
+      - ${GROUP_SERVICE_PORT}
+#    ports:
+#      - ${GROUP_SERVICE_PORT}:${GROUP_SERVICE_PORT}
+    # depends_on:
+      # - db
+    networks:
+      - hqf
+    extra_hosts:
+      - mongodb.hqfang.com.cn:${MONGO_DB_IP}
+  gw:
+    image: ${DOCKER_PREFIX}-service-gw
+    build:
+      dockerfile: ${DOCKERFILE}
+      context: .
+      args:
+        APP_HOME: ${APP_HOME}
+    container_name: ${DOCKER_PREFIX}-service-gw
+    restart: always
+    environment:
+      - SERVER_PORT=${GW_SERVICE_PORT}
+      - NACOS_ADDR=${NACOS_ADDR}
+    volumes:
+      - ${GW_SERVICE}:${APP_HOME}   # 将jar包映射进来
+      - ./files:/usr/app/files         # 上传的静态文件映射到nginx下面去
+      - ./apps/logs:/usr/app/logs       # 将springboot应用的日志映射出来
+      - /etc/localtime:/etc/localtime
+    expose:
+      - ${GW_SERVICE_PORT}
+    ports:
+      - ${GW_SERVICE_PORT}:${GW_SERVICE_PORT}
+    # depends_on:
+      # - db
+    networks:
+      - hqf
+    extra_hosts:
+      - mongodb.hqfang.com.cn:${MONGO_DB_IP}
+  oauth2:
+    image: ${DOCKER_PREFIX}-service-oauth2
+    build:
+      dockerfile: ${DOCKERFILE}
+      context: .
+      args:
+        APP_HOME: ${APP_HOME}
+    container_name: ${DOCKER_PREFIX}-service-oauth2
+    restart: always
+    environment:
+      - SERVER_PORT=${OAUTH2_SERVICE_PORT}
+      - NACOS_ADDR=${NACOS_ADDR}
+    volumes:
+      - ${OAUTH2_SERVICE}:${APP_HOME}   # 将jar包映射进来
+      - ./files:/usr/app/files         # 上传的静态文件映射到nginx下面去
+      - ./apps/logs:/usr/app/logs       # 将springboot应用的日志映射出来
+      - /etc/localtime:/etc/localtime
+    expose:
+      - ${OAUTH2_SERVICE_PORT}
+#    ports:
+#      - ${OAUTH2_SERVICE_PORT}:${OAUTH2_SERVICE_PORT}
+    # depends_on:
+      # - db
+    networks:
+      - hqf
+    extra_hosts:
+      - mongodb.hqfang.com.cn:${MONGO_DB_IP}
+  order:
+    image: ${DOCKER_PREFIX}-service-order
+    build:
+      dockerfile: ${DOCKERFILE}
+      context: .
+      args:
+        APP_HOME: ${APP_HOME}
+    container_name: ${DOCKER_PREFIX}-service-order
+    restart: always
+    environment:
+      - SERVER_PORT=${ORDER_SERVICE_PORT}
+      - NACOS_ADDR=${NACOS_ADDR}
+    volumes:
+      - ${ORDER_SERVICE}:${APP_HOME}   # 将jar包映射进来
+      - ./files:/usr/app/files         # 上传的静态文件映射到nginx下面去
+      - ./apps/logs:/usr/app/logs       # 将springboot应用的日志映射出来
+      - /etc/localtime:/etc/localtime
+    expose:
+      - ${ORDER_SERVICE_PORT}
+#    ports:
+#      - ${ORDER_SERVICE_PORT}:${ORDER_SERVICE_PORT}
+    # depends_on:
+      # - db
+    networks:
+      - hqf
+    extra_hosts:
+      - mongodb.hqfang.com.cn:${MONGO_DB_IP}
+  system:
+    image: ${DOCKER_PREFIX}-service-system
+    build:
+      dockerfile: ${DOCKERFILE}
+      context: .
+      args:
+        APP_HOME: ${APP_HOME}
+    container_name: ${DOCKER_PREFIX}-service-system
+    restart: always
+    environment:
+      - SERVER_PORT=${SYSTEM_SERVICE_PORT}
+      - NACOS_ADDR=${NACOS_ADDR}
+    volumes:
+      - ${SYSTEM_SERVICE}:${APP_HOME}   # 将jar包映射进来
+      - ./files:/usr/app/files         # 上传的静态文件映射到nginx下面去
+      - ./apps/logs:/usr/app/logs       # 将springboot应用的日志映射出来
+      - /etc/localtime:/etc/localtime
+    expose:
+      - ${SYSTEM_SERVICE_PORT}
+#    ports:
+#      - ${SYSTEM_SERVICE_PORT}:${SYSTEM_SERVICE_PORT}
+    # depends_on:
+      # - db
+    networks:
+      - hqf
+    extra_hosts:
+      - mongodb.hqfang.com.cn:${MONGO_DB_IP}
+  user:
+    image: ${DOCKER_PREFIX}-service-user
+    build:
+      dockerfile: ${DOCKERFILE}
+      context: .
+      args:
+        APP_HOME: ${APP_HOME}
+    container_name: ${DOCKER_PREFIX}-service-user
+    restart: always
+    environment:
+      - SERVER_PORT=${USER_SERVICE_PORT}
+      - NACOS_ADDR=${NACOS_ADDR}
+    volumes:
+      - ${USER_SERVICE}:${APP_HOME}   # 将jar包映射进来
+      - ./files:/usr/app/files         # 上传的静态文件映射到nginx下面去
+      - ./apps/logs:/usr/app/logs       # 将springboot应用的日志映射出来
+      - /etc/localtime:/etc/localtime
+    expose:
+      - ${USER_SERVICE_PORT}
+#    ports:
+#      - ${USER_SERVICE_PORT}:${USER_SERVICE_PORT}
+    # depends_on:
+      # - db
+    networks:
+      - hqf
+    extra_hosts:
+      - mongodb.hqfang.com.cn:${MONGO_DB_IP}
+  wx:
+    image: ${DOCKER_PREFIX}-service-wx
+    build:
+      dockerfile: ${DOCKERFILE}
+      context: .
+      args:
+        APP_HOME: ${APP_HOME}
+    container_name: ${DOCKER_PREFIX}-service-wx
+    restart: always
+    environment:
+      - SERVER_PORT=${WX_SERVICE_PORT}
+      - NACOS_ADDR=${NACOS_ADDR}
+    volumes:
+      - ${WX_SERVICE}:${APP_HOME}   # 将jar包映射进来
+      - ./files:/usr/app/files         # 上传的静态文件映射到nginx下面去
+      - ./apps/logs:/usr/app/logs       # 将springboot应用的日志映射出来
+      - /etc/localtime:/etc/localtime
+    expose:
+      - ${WX_SERVICE_PORT}
+#    ports:
+#      - ${WX_SERVICE_PORT}:${WX_SERVICE_PORT}
+    # depends_on:
+      # - db
+    networks:
+      - hqf
+    extra_hosts:
+      - mongodb.hqfang.com.cn:${MONGO_DB_IP}
+
+  # db:
+  #   image: mongo
+  #   container_name: ${DOCKER_PREFIX}-mongo
+  #   restart: always
+  #   environment:
+  #     TZ: Asia/Shanghai
+  #     MONGO_INITDB_DATABASE: hqf
+  #     MONGO_INITDB_ROOT_USERNAME: root
+  #     MONGO_INITDB_ROOT_PASSWORD: mongo.ROOT
+  #   expose:
+  #     - 27017
+  #   #    ports:
+  #   #      - 27017:27017
+  #   networks:
+  #     - hqf
+  #   volumes:
+  #     #      - /etc/localtime:/etc/localtime
+  #     - ./mongo/data:/data/db    # 将数据库文件映射出来
+  #     - ./mongo/init:/docker-entrypoint-initdb.d   # 初始化数据库，用来创建必须的数据库和用户
+  #   command: mongod --auth
+
+  # nginx:
+  #   image: nginx
+  #   container_name: ${DOCKER_PREFIX}-nginx
+  #   restart: always
+  #   volumes:
+  #     #      - ./docker/nginx/conf/proxy.conf:/etc/nginx/proxy.conf
+  #     #      - ./docker/nginx/conf/nginx.conf:/etc/nginx/nginx.conf
+  #     - ./nginx/conf/conf.d:/etc/nginx/conf.d  # 里面的default.conf是nginx的配置
+  #     - ./nginx/html:/usr/share/nginx/html     # 前端的页面放在这里
+  #     - ./nginx/logs:/var/log/nginx            # 把log映射出来
+  #     - ./files:/usr/share/nginx/files         # 上传的所有静态文件都在这里
+  #   ports:
+  #     - 443:443
+  #   depends_on:
+  #     - gw
+  #   networks:
+  #     - hqf
+
+networks:
+  hqf:
+    driver: bridge

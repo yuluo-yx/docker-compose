@@ -1,0 +1,21 @@
+version: '3'
+
+services:
+  portainer:
+    image: portainer/portainer-ce:latest
+    container_name: portainer
+    restart: unless-stopped
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - ./portainer-data:/data
+    expose:
+      - 9000
+
+    # 使用nginx管理容器服务，需要和ngingproxymanager使用同一网络
+    networks:
+      - nginx
+
+networks:
+  nginx:
+    external: true

@@ -1,0 +1,174 @@
+version: "3.3"
+
+networks:
+  mynetword:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.22.0.0/16
+        # gateway: 172.19.0.1
+
+services:
+
+  rs11:
+    image: mongo
+    # ports:
+    #   - "27018:27018"
+    restart: always
+    #让容器拥有root权
+    privileged: true
+    volumes:
+      - "$PWD/mongodb/rs11:/data/db"
+      - "$PWD/mongodbkeyfile:/mongodbkeyfile"
+    command:  /bin/sh -c 'mongod  --shardsvr --replSet "rs1" --bind_ip_all --maxConns 20000'
+    # command:  /bin/sh -c 'mongod  --shardsvr --replSet "rs1" --bind_ip_all --maxConns 20000 --auth --keyFile /mongodbkeyfile'
+    networks:
+      mynetword:
+        ipv4_address: 172.22.101.111
+
+  rs12:
+    image: mongo
+    # ports:
+    #   - "27018:27018"
+    restart: always
+    #让容器拥有root权
+    privileged: true
+    volumes:
+      - "$PWD/mongodb/rs12:/data/db"
+      - "$PWD/mongodbkeyfile:/mongodbkeyfile"
+    command:  /bin/sh -c 'mongod  --shardsvr --replSet "rs1" --bind_ip_all --maxConns 20000'
+    # command:  /bin/sh -c 'mongod  --shardsvr --replSet "rs1" --bind_ip_all --maxConns 20000 --auth --keyFile /mongodbkeyfile'
+    networks:
+      mynetword:
+        ipv4_address: 172.22.101.112
+
+  rs13:
+    image: mongo
+    # ports:
+    #   - "27018:27018"
+    restart: always
+    #让容器拥有root权
+    privileged: true
+    volumes:
+      - "$PWD/mongodb/rs13:/data/db"
+      - "$PWD/mongodbkeyfile:/mongodbkeyfile"
+    command:  /bin/sh -c 'mongod  --shardsvr --replSet "rs1" --bind_ip_all --maxConns 20000'
+    # command:  /bin/sh -c 'mongod  --shardsvr --replSet "rs1" --bind_ip_all --maxConns 20000 --auth --keyFile /mongodbkeyfile'
+    networks:
+      mynetword:
+        ipv4_address: 172.22.101.113
+
+
+  rs21:
+    image: mongo
+    # ports:
+    #   - "27018:27018"
+    restart: always
+    #让容器拥有root权
+    privileged: true
+    volumes:
+      - "$PWD/mongodb/rs21:/data/db"
+      - "$PWD/mongodbkeyfile:/mongodbkeyfile"
+    command:  /bin/sh -c 'mongod  --shardsvr --replSet "rs2" --bind_ip_all --maxConns 20000'
+    # command:  /bin/sh -c 'mongod  --shardsvr --replSet "rs2" --bind_ip_all --maxConns 20000 --auth --keyFile /mongodbkeyfile'
+    networks:
+      mynetword:
+        ipv4_address: 172.22.101.121
+
+  rs22:
+    image: mongo
+    # ports:
+    #   - "27018:27018"
+    restart: always
+    #让容器拥有root权
+    privileged: true
+    volumes:
+      - "$PWD/mongodb/rs22:/data/db"
+      - "$PWD/mongodbkeyfile:/mongodbkeyfile"
+    command:  /bin/sh -c 'mongod  --shardsvr --replSet "rs2" --bind_ip_all --maxConns 20000'
+    # command:  /bin/sh -c 'mongod  --shardsvr --replSet "rs2" --bind_ip_all --maxConns 20000 --auth --keyFile /mongodbkeyfile'
+    networks:
+      mynetword:
+        ipv4_address: 172.22.101.122
+
+  rs23:
+    image: mongo
+    # ports:
+    #   - "27018:27018"
+    restart: always
+    #让容器拥有root权
+    privileged: true
+    volumes:
+      - "$PWD/mongodb/rs23:/data/db"
+      - "$PWD/mongodbkeyfile:/mongodbkeyfile"
+    command:  /bin/sh -c 'mongod  --shardsvr --replSet "rs2" --bind_ip_all --maxConns 20000'
+    # command:  /bin/sh -c 'mongod  --shardsvr --replSet "rs2" --bind_ip_all --maxConns 20000 --auth --keyFile /mongodbkeyfile'
+    networks:
+      mynetword:
+        ipv4_address: 172.22.101.123
+
+
+
+
+  cs1:
+    image: mongo
+    # ports:
+    #   - "27019:27019"
+    restart: always
+    #让容器拥有root权
+    privileged: true
+    volumes:
+      - "$PWD/mongodb/cs1:/data/configdb"
+      - "$PWD/mongodbkeyfile:/mongodbkeyfile"
+    command:  /bin/sh -c 'mongod  --configsvr --replSet "cs" --bind_ip_all --maxConns 20000'
+    # command:  /bin/sh -c 'mongod  --configsvr --replSet "cs" --bind_ip_all --maxConns 20000 --auth --keyFile /mongodbkeyfile'
+    networks:
+      mynetword:
+        ipv4_address: 172.22.101.51
+
+  cs2:
+    image: mongo
+    # ports:
+    #   - "27019:27019"
+    restart: always
+    #让容器拥有root权
+    privileged: true
+    volumes:
+      - "$PWD/mongodb/cs2:/data/configdb"
+      - "$PWD/mongodbkeyfile:/mongodbkeyfile"
+    command:  /bin/sh -c 'mongod  --configsvr --replSet "cs" --bind_ip_all --maxConns 20000'
+    # command:  /bin/sh -c 'mongod  --configsvr --replSet "cs" --bind_ip_all --maxConns 20000 --auth --keyFile /mongodbkeyfile'
+    networks:
+      mynetword:
+        ipv4_address: 172.22.101.52
+
+  cs3:
+    image: mongo
+    # ports:
+    #   - "27019:27019"
+    restart: always
+    #让容器拥有root权
+    privileged: true
+    volumes:
+      - "$PWD/mongodb/cs3:/data/configdb"
+      - "$PWD/mongodbkeyfile:/mongodbkeyfile"
+    command:  /bin/sh -c 'mongod  --configsvr --replSet "cs" --bind_ip_all --maxConns 20000'
+    # command:  /bin/sh -c 'mongod  --configsvr --replSet "cs" --bind_ip_all --maxConns 20000 --auth --keyFile /mongodbkeyfile'
+    networks:
+      mynetword:
+        ipv4_address: 172.22.101.53
+
+  ms1:
+    image: mongo
+    ports:
+      - "27017:27017"
+    restart: always
+    #让容器拥有root权
+    privileged: true
+    volumes:
+      - "$PWD/mongodbkeyfile:/mongodbkeyfile"
+    command:  /bin/sh -c 'mongos  --configdb cs/cs1:27019,cs2:27019,cs3:27019 --bind_ip_all --maxConns 20000'
+    # command:  /bin/sh -c 'mongos  --configdb cs/cs1:27019,cs2:27019,cs3:27019 --bind_ip_all --maxConns 20000 --keyFile /mongodbkeyfile'
+    networks:
+      mynetword:
+        ipv4_address: 172.22.101.1

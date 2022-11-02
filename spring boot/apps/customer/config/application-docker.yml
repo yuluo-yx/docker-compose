@@ -1,0 +1,22 @@
+server:
+  port: ${CUSTOMER_SERVICE_PORT:9090}
+
+logging:
+  file:
+    name: /usr/app/logs/customer-service.log
+  pattern:
+    dateformat: yyyy-MM-dd HH:mm:ss.SSS,GMT+8
+
+spring:
+  cloud:
+    nacos:
+      discovery:
+        server-addr: ${NACOS_ADDR:59.74.224.2:8848}
+  data:
+    mongodb:
+      uri: mongodb://hqfangDB-admin:Wp9yw8f8EKj4y9B6zZ@mongodb.hqfang.com.cn:27018,mongodb.hqfang.com.cn:27019/hqfangDB?replicaSet=rs0
+      authentication-database: hqfangDB
+      database: hqfangDB
+
+wx:
+  appid: wx188b5e6fe114d22e # 小程序appid，发送现金红包必须用
